@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<template id="__bundler_thumbnail">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#1D3975"/><circle cx="50" cy="50" r="26" fill="#EB806A"/><text x="50" y="62" font-size="28" font-weight="700" text-anchor="middle" fill="#FAF1E3" font-family="sans-serif">完</text></svg>
+</template>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="ds/tokens/fonts.css">
+<link rel="stylesheet" href="ds/tokens/colors.css">
+<link rel="stylesheet" href="ds/tokens/typography.css">
+<link rel="stylesheet" href="ds/tokens/spacing.css">
+<link rel="stylesheet" href="ds/tokens/base.css">
+<link rel="stylesheet" href="ds/styles.css">
+<script src="ds/ds-bundle.js"></script>
+<style>
+  :root {
+    --font-base: "GenSenRoundedTW", "GenSen Maru Gothic TW", "PingFang TC", "Noto Sans TC", system-ui, sans-serif;
+    --font-display: "GenSenRoundedTW", "GenSen Maru Gothic TW", "PingFang TC", "Noto Sans TC", system-ui, sans-serif;
+  }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--cream); color: var(--ink); font-family: var(--font-base); line-height: var(--lh-body); -webkit-font-smoothing: antialiased; }
+  a { color: var(--coral-700); text-decoration: none; }
+  a:hover { color: var(--coral-600); }
+  ::-webkit-scrollbar { height: 0; width: 0; }
+</style>
+</helmet>
+
+<div style="background: var(--cream); min-height: 100vh; font-family: var(--font-base);">
+
+  <header style="position: relative; overflow: hidden; background: var(--navy); color: var(--cream);">
+    <sc-if value="{{ showBlobs }}" hint-placeholder-val="{{ true }}">
+      <div style="position: absolute; inset: 0; pointer-events: none; overflow: hidden;">
+        <img src="assets/naruto.png" alt="" style="position: absolute; width: 300px; height: auto; right: -80px; top: -110px; opacity: .16; transform: rotate(-12deg);">
+        <img src="assets/naruto.png" alt="" style="position: absolute; width: 150px; height: auto; right: 250px; bottom: -60px; opacity: .12; transform: rotate(18deg);">
+        <img src="assets/naruto.png" alt="" style="position: absolute; width: 96px; height: auto; left: -34px; bottom: 40px; opacity: .1; transform: rotate(8deg);">
+      </div>
+    </sc-if>
+
+    <div style="position: relative; max-width: 1200px; margin: 0 auto; padding: 28px 48px 0; display: flex; align-items: center; gap: 16px;">
+      
+    </div>
+
+    <div style="position: relative; max-width: 1200px; margin: 0 auto; padding: 48px 48px 64px; display: flex; flex-wrap: wrap; align-items: flex-end; gap: 40px; justify-content: space-between;">
+      <div style="max-width: 620px; display: flex; flex-direction: column; gap: 20px;">
+        <span style="font-size: var(--fs-xs); font-weight: var(--fw-bold); letter-spacing: var(--ls-eyebrow); text-transform: uppercase; color: var(--coral-300);">PROMPT LIBRARY</span>
+        <h1 style="margin: 0; font-family: var(--font-display); font-size: clamp(38px, 5vw, 68px); font-weight: var(--fw-heavy); line-height: var(--lh-tight); color: var(--cream);">依課程階段<br>整理的提示詞菜單</h1>
+        <p style="margin: 0; font-size: var(--fs-lg); line-height: var(--lh-body); color: var(--cream); opacity: .78; text-wrap: pretty;">一道課配一道提示詞。點選階段切換菜單，點擊任一張卡片就能看到完整內容，複製後直接餵給 AI。</p>
+      </div>
+      <img src="assets/mascot-ramen.png" alt="完食君吃麵" style="width: 214px; height: 173px; display: block; align-self: flex-end; margin-bottom: -8px">
+    </div>
+  </header>
+
+  <div style="position: sticky; top: 0; z-index: 20; background: var(--cream); border-bottom: 1px solid var(--cream-200);">
+    <nav style="max-width: 1200px; margin: 0 auto; padding: 16px 48px; display: flex; gap: 10px; overflow-x: auto;">
+      <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="8">
+        <button type="button" onClick="{{ item.onClick }}" style="flex: none; display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-base); font-size: var(--fs-sm); font-weight: var(--fw-bold); line-height: 1; padding: 11px 20px; border-radius: var(--radius-pill); cursor: pointer; white-space: nowrap; transition: transform var(--dur-fast) var(--ease-bite), filter var(--dur-base) var(--ease-out); background: {{ item.bg }}; color: {{ item.fg }}; border: 2px solid {{ item.border }}; box-shadow: {{ item.shadow }};" style-hover="filter: brightness(1.06);" style-active="transform: scale(0.96);">
+          <span style="opacity: .55; font-weight: var(--fw-medium);">{{ item.num }}</span>{{ item.name }}
+        </button>
+      </sc-for>
+    </nav>
+  </div>
+
+  <main style="max-width: 1200px; margin: 0 auto; padding: 64px 48px 96px;">
+    <div style="display: flex; align-items: center; gap: 18px; margin-bottom: 16px;">
+      <span style="flex: none; width: 52px; height: 52px; border-radius: 999px; background: var(--coral); color: var(--white); font-family: var(--font-display); font-weight: var(--fw-heavy); font-size: var(--fs-h4); display: inline-flex; align-items: center; justify-content: center; box-shadow: var(--shadow-coral);">{{ stageNum }}</span>
+      <h2 style="margin: 0; font-family: var(--font-display); font-size: clamp(26px, 3vw, 40px); font-weight: var(--fw-heavy); line-height: var(--lh-snug); color: var(--navy);">{{ stageName }}</h2>
+    </div>
+    <p style="margin: 0 0 40px; max-width: 64ch; font-size: var(--fs-lg); color: var(--ink-600); text-wrap: pretty;">{{ stageDesc }}</p>
+
+    <div style="display: grid; gap: 24px; grid-template-columns: repeat(auto-fill, minmax({{ gridMin }}, 1fr));">
+      <sc-for list="{{ cards }}" as="card" hint-placeholder-count="4">
+        <button type="button" onClick="{{ card.onClick }}" style="text-align: left; font-family: var(--font-base); background: var(--white); border: none; border-radius: var(--radius-lg); padding: 26px 26px 22px; min-height: 236px; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; cursor: pointer; box-shadow: var(--shadow-md); transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);" style-hover="transform: translateY(-4px); box-shadow: var(--shadow-lg);">
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <h3 style="margin: 0; font-size: var(--fs-h4); font-weight: var(--fw-bold); line-height: var(--lh-snug); color: var(--navy);">{{ card.title }}</h3>
+            <p style="margin: 0; font-size: var(--fs-sm); font-weight: var(--fw-medium); line-height: var(--lh-snug); color: var(--coral-700);">{{ card.subtitle }}</p>
+          </div>
+          <p style="margin: 0; flex: 1; font-size: var(--fs-sm); line-height: var(--lh-body); color: var(--ink-600); display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;">{{ card.text }}</p>
+          <span style="font-size: var(--fs-sm); font-weight: var(--fw-bold); color: var(--coral-700);">看完整提示詞 →</span>
+        </button>
+      </sc-for>
+    </div>
+  </main>
+
+  <footer style="background: var(--navy-700); color: var(--cream); text-align: center; padding: 32px 24px;">
+    <p style="margin: 0; font-size: var(--fs-sm); opacity: .68;">完食提示詞菜單 · 內容持續更新中 · kanshoku.co</p>
+  </footer>
+
+  <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ onOverlayClick }}" style="position: fixed; inset: 0; z-index: 100; background: rgba(15, 31, 67, .62); backdrop-filter: blur(3px); display: flex; align-items: center; justify-content: center; padding: 32px;">
+      <div style="position: relative; background: var(--cream); color: var(--ink); width: 100%; max-width: 620px; height: 84vh; max-height: 84vh; overflow: hidden; border-radius: var(--radius-xl); padding: 40px 0 24px; box-shadow: var(--shadow-lg); display: flex; flex-direction: column; gap: 20px;">
+        <button type="button" onClick="{{ onClose }}" aria-label="關閉" style="position: absolute; top: 22px; right: 22px; width: 36px; height: 36px; border-radius: 999px; border: none; background: var(--cream-200); color: var(--navy); font-size: 18px; line-height: 1; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;" style-hover="filter: brightness(1.04);">✕</button>
+        <div style="flex: none; display: flex; flex-direction: column; gap: 8px; padding: 0 40px 0 40px; padding-right: 76px;">
+          <h3 style="margin: 0; font-family: var(--font-display); font-size: var(--fs-h3); font-weight: var(--fw-heavy); line-height: var(--lh-snug); color: var(--navy);">{{ modalTitle }}</h3>
+          <p style="margin: 0; font-size: var(--fs-body); font-weight: var(--fw-medium); line-height: var(--lh-snug); color: var(--coral-700);">{{ modalSubtitle }}</p>
+        </div>
+        <div style="flex: 1 1 auto; min-height: 0; overflow-y: auto; margin: 0 40px; padding: 22px 24px; border: 1.5px solid var(--cream-200); border-radius: var(--radius-md); background: var(--white); -webkit-overflow-scrolling: touch;">
+          <p ref="{{ textRef }}" style="margin: 0; font-size: var(--fs-body); line-height: var(--lh-relaxed); color: var(--ink); white-space: pre-line; text-wrap: pretty; user-select: text;">{{ modalText }}</p>
+        </div>
+        <div style="flex: none; display: flex; justify-content: flex-end; gap: 12px; padding: 20px 40px 0; border-top: 1px solid var(--cream-200);">
+          <div>
+            <x-import component-from-global-scope="KanshokuDesignSystem_6ded9c.Button" variant="accent" onClick="{{ onCopy }}" hint-size="auto,46px">{{ copyLabel }}</x-import>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showBlobs&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;density&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;comfortable&quot;,&quot;compact&quot;],&quot;default&quot;:&quot;comfortable&quot;,&quot;tsType&quot;:&quot;\&quot;comfortable\&quot; | \&quot;compact\&quot;&quot;}}">
+const PLACEHOLDER = "這裡放提示詞的完整內容，之後會替換成正式文字。可以是一段給 AI 使用的指令，說明情境、限制與希望產出的格式。先用這段假文字佔位，方便確認彈出視窗的版面與比例是否合適，之後只要把正式提示詞貼進來即可。";
+
+const P = (...lines) => lines.join("\n");
+
+const STAGE_01 = [
+  {
+    title: "評估 WHT 句型",
+    subtitle: "完成 WHT 句型後，用來檢查問題是否明確且適合發展成產品設計。",
+    text: P(
+      "你是一位資深 UX Designer，擅長產品策略與需求價值評估。請協助我評估 We Have To（WHT）句型是否適合作為產品設計的起點，並提供改善建議。",
+      "",
+      "我會提供：",
+      "• WHT：（輸入你的 WHT 句型）",
+      "",
+      "請依照以下原則進行評估：",
+      "1. 對象：是否清楚描述產品要服務的使用者？目標族群是否足夠明確？",
+      "2. 情境：是否描述了使用者在什麼情況、目的或需求下會使用產品？情境是否具體？",
+      "3. 設計：這個問題是否適合透過數位產品或介面設計解決？是否具有產品設計價值？",
+      "4. 挑戰：如果將這個 WHT 發展成產品，可能會遇到哪些困難或限制？",
+      "",
+      "Output Format",
+      "請依序針對以上四個面向進行分析，說明這個 WHT 的優點與可以改善的地方。",
+      "",
+      "最後請整體評估這個 WHT 是否適合作為 UI/UX 產品設計的起點，並說明原因。如果需要修改請提供 3 個更具體、更容易延伸成產品設計的 WHT 版本。"
+    )
+  },
+  {
+    title: "發想使用者具體行為",
+    subtitle: "從主題出發，發想和主題相關的使用者行為。",
+    text: P(
+      "你是一位資深 UX Designer，擅長需求探索。請協助我根據產品主題，發想使用者可能發生的具體行為，作為後續產品設計的基礎。",
+      "",
+      "我會提供：",
+      "• 主題：（輸入你的主題，EX：旅遊）",
+      "• 具體主題：（輸入你的具體主題，EX：行程規劃）",
+      "",
+      "請依照以下原則發想：",
+      "1. 行為：描述使用者會做的事情，而不是產品功能。",
+      "2. 具體：避免籠統、盡可能描述清楚情境與目的。",
+      "3. 驗證：請先以「我＋動詞＋受詞」檢查每一句是否通順，僅作為檢查方式，不要將「我」輸出。",
+      "4. 發散：從搜尋、比較、規劃、決策、預約、購買、分享、管理等不同面向思考，避免只是替換受詞或用詞，盡可能發想不同情境、不同目的的使用者行為。",
+      "",
+      "Output Format",
+      "請列出 10–20 個使用者具體行為，每行一個，不需分類。每個行為皆以動詞開頭，不要包含「我」或其他主詞，也不要描述產品功能或重複相似的行為。",
+      "",
+      "最後挑出 5 個最值得深入設計的核心行為（優先選擇發生頻率高、重要性高，或最容易產生痛點的行為），並簡單說明原因。"
+    )
+  }
+];
+
+const STAGE_02 = [
+  {
+    title: "引導設計反思",
+    subtitle: "不知道如何將觀察延伸成設計觀點時，讓 AI 透過提問陪你梳理思考。",
+    text: P(
+      "你是一位設計教練。你的任務不是直接告訴我答案，是透過循序漸進的提問，引導我思考設計背後的原因，幫助我建立產品設計思維。",
+      "",
+      "我會提供：",
+      "• 觀察：（輸入你的觀察）",
+      "• 反思：（輸入你的反思）",
+      "",
+      "請依照以下原則進行：",
+      "1. 每次只提出一個問題。",
+      "2. 問題需根據我上一個回答繼續追問，不要使用固定問題清單。",
+      "3. 問題保持簡短，一句即可，避免一次詢問太多內容。",
+      "4. 優先從我的感受開始，再逐步延伸到使用者需求、設計目的或產品思考。",
+      "5. 不要直接告訴我答案，而是透過提問引導我思考。",
+      "6. 約進行 3 次提問後，再整理我們的討論；如果我的回答仍不夠深入，可以再多追問 1～2 次。",
+      "",
+      "Output Format",
+      "前幾輪只需要提出一個問題，不要分析或下結論。",
+      "完成提問後，請整理：",
+      "• 觀察",
+      "• 反思",
+      "• 對話重點（摘要我們每一次討論的內容）",
+      "• 最終觀點（2～3 句即可，整合討論後的設計觀點，不要過長）"
+    )
+  },
+  {
+    title: "快速驗證產品概念",
+    subtitle: "將產品規劃轉成可操作的 Demo，確認核心功能與使用流程。",
+    text: P(
+      "請根據我提供的產品規劃，設計並生成一個可操作的 Web App Demo，重點放在驗證產品概念與使用流程，而不是追求完整功能。",
+      "",
+      "我會提供：",
+      "• 產品介紹：（輸入你的產品介紹）",
+      "• 產品亮點：（輸入你的產品亮點）",
+      "• 產品功能：（輸入你的產品功能）",
+      "• 使用者目標：（輸入你的使用者目標）",
+      "• 核心流程：（輸入你的核心流程）",
+      "",
+      "請依照以下原則開發：",
+      "1. 產品：忠實理解產品規劃，不要自行加入無關功能",
+      "2. 流程：以完成使用者目標為核心，建立合理且流暢的操作流程",
+      "3. 介面：設計現代、簡潔且易於操作的 Web App，優先考慮使用體驗",
+      "4. 開發：使用適合快速展示的前端技術完成 Demo",
+      "",
+      "Output Format",
+      "請直接生成一個可運作的 Web App，讓我可以快速驗證產品概念。"
+    )
+  },
+  {
+    title: "找到產品的視覺定位",
+    subtitle: "透過逐步提問，整理適合產品的品牌感受與視覺方向。",
+    text: P(
+      "你是一位品牌設計顧問，你的任務是透過提問，協助我找到適合產品的視覺定位。",
+      "",
+      "我會提供：",
+      "• 產品主題：（輸入你的產品主題，例如：分享出國都買什麼的 App）",
+      "",
+      "請依照以下原則進行：",
+      "1. 每次只提出一個問題。",
+      "2. 問題需根據我上一個回答繼續追問，不要使用固定問題清單。",
+      "3. 問題保持簡短，一句即可，避免一次詢問太多內容。",
+      "4. 優先了解產品、目標使用者和希望傳達的品牌感受，再逐步延伸到色彩、介面風格、插圖、照片、字體等視覺方向。",
+      "5. 約進行 3 次提問後，再整理出適合的產品視覺定位；如果資訊仍不足，可以再多追問 1-2 次。",
+      "",
+      "Output Form",
+      "前幾輪只需要提出一個問題，不要直接給我視覺風格。完成提問後，請整理：",
+      "• 品牌想傳達的感受",
+      "• 建議的視覺方向（包含色彩、排版、圖片風格、UI 風格等）",
+      "• 三個最適合的風格形容詞"
+    )
+  },
+  {
+    title: "優化現有介面設計",
+    subtitle: "保留原有功能與流程，重新整理介面的視覺呈現與互動細節。",
+    text: P(
+      "請根據目前已完成的 Web App，重新設計介面視覺與 UI 呈現，保留原有功能、資訊架構與操作流程，不要新增、刪除或修改產品功能。",
+      "",
+      "我會提供：",
+      "• 品牌風格：（例如：現代、溫暖、科技、簡約）",
+      "• 色彩偏好：（例如：藍色系、綠色系）",
+      "• 其他設計需求：（選填）",
+      "",
+      "請依照以下原則設計：",
+      "1. 一致性：維持整體視覺風格一致，建立完整的設計語言。",
+      "2. 層級：透過字體、色彩、留白與排版，建立清楚的資訊層級。",
+      "3. 體驗：提升介面的易讀性、易用性與視覺品質，但不要改變原本的操作流程。",
+      "4. 細節：加入適當的圓角、陰影、Icon、圖片、插圖與 Hover/Transition 等細節，讓介面更完整且具有產品感。",
+      "",
+      "Output Format",
+      "請直接重新設計目前的 Web App UI，保留所有功能與流程，只優化視覺設計與互動細節，使其更接近正式產品。"
+    )
+  }
+];
+
+const STAGE_03 = [
+  {
+    title: "生成元件清單",
+    subtitle: "設計介面時盤點需要的元件、內容與操作方式，並且產生介面設計參考。",
+    text: P(
+      "我正在設計（輸入你的產品名稱、類型）APP 的（輸入你的畫面名稱，例如：登入頁面），使用情境是（輸入想完成的事情，例如：填寫帳號密碼）。",
+      "",
+      "主要顏色（選填）：（輸入你的 #色號）",
+      "",
+      "請根據情境，幫我補充畫面需要的元件、內容與操作方式，並生成一個完整的介面設計參考，不需要提供程式碼。"
+    )
+  },
+  {
+    title: "產生功能練習題",
+    subtitle: "學習 Figma 功能時，產生一個能在 15 分鐘內完成的操作練習。",
+    text: P(
+      "我正在練習 Figma 的（輸入想練習的功能名稱，例如：Auto Layout）。",
+      "",
+      "請幫我設計一個 15 分鐘內可以完成的介面練習，包含：",
+      "1. 要製作的內容",
+      "2. 建議使用的元件",
+      "3. 操作步驟",
+      "4. 完成條件",
+      "5. 自我檢查項目",
+      "",
+      "練習只需使用目前指定的功能，不要加入太多進階技巧。"
+    )
+  },
+  {
+    title: "找出操作設定錯誤",
+    subtitle: "操作結果不如預期時，找出最可能出錯的圖層與設定方式。",
+    text: P(
+      "我正在使用Figma 製作這個介面，但遇到以下問題：",
+      "（簡單描述問題，例如：按鈕文字變長後，按鈕不會跟著變寬）",
+      "",
+      "請根據我提供的畫面，判斷可能是哪個設定有問題，並告訴我：",
+      "1. 應該檢查哪個圖層",
+      "2. 哪個設定可能錯誤",
+      "3. 正確的設定方式",
+      "4. 修改後應該出現什麼結果",
+      "",
+      "請一次排查一個最可能的原因。"
+    )
+  }
+];
+
+const STAGE_04 = [
+  {
+    title: "產品視覺定位",
+    subtitle: "尋找設計參考時，比較競品的色彩、字型與介面風格。",
+    text: P(
+      "我正在設計（輸入你的產品名稱、類型），主要使用者是（輸入你的目標使用者），視覺定位為（輸入你的產品風格）。",
+      "",
+      "請從 Mobbin 找出 5 個功能或定位相近的 App，附上案例連結，並根據實際介面分析：",
+      "1. 色彩選擇：主色、背景色與點綴色如何呼應產品定位？帶給使用者什麼感受？",
+      "2. 字型風格：標題、內文與輔助資訊的字重層級是否清楚？整體語氣偏向親切、專業、活潑或沉穩？",
+      "3. 視覺個性：用 3 個具體形容詞描述，並簡述判斷依據。",
+      "4. 適用性：這些視覺選擇為什麼符合它的使用者與使用情境？哪些地方值得參考？",
+      "",
+      "Output Format",
+      "整理成對照表，避免只寫「簡約、現代、清爽」等空泛描述；也不要在無法確認時猜測字型名稱或精確色碼。",
+      "",
+      "最後推薦一個最符合我的產品定位的主要參考案例，整理值得借鑑的色彩、字型與版面設計，並說明哪些部分不適合直接套用。"
+    )
+  },
+  {
+    title: "介面品質檢測",
+    subtitle: "完成多個頁面後，檢查元件與視覺規則是否保持一致。",
+    text: P(
+      "請幫我檢查這張圖中所有頁面的設計是否一致，包含顏色、文字大小、按鈕、卡片、圓角、間距和圖示。",
+      "",
+      "如果有功能相同、外觀卻不一致的地方，請指出是哪個頁面、哪個元件，以及差異在哪裡。",
+      "",
+      "Output Format",
+      "最後請整理成表格，告訴我：",
+      "1. 哪些地方已經一致",
+      "2. 哪些地方需要統一",
+      "3. 建議統一成什麼樣子",
+      "4. 最優先需要修改的 3 個問題",
+      "",
+      "請根據實際畫面分析，不要猜測看不到的內容。"
+    )
+  },
+  {
+    title: "色彩規劃",
+    subtitle: "建立產品視覺風格時，產出可直接建立 Color Styles 的完整配色。",
+    text: P(
+      "我正在設計（輸入你的產品名稱、類型），主要使用者是（輸入你的目標使用者），希望呈現（輸入希望帶給使用者的感受，可以用形容詞）的感覺。",
+      "",
+      "請幫我規劃三組完整的 UI 配色，提供：",
+      "1. 主色：1 個色號",
+      "2. 輔助色：1-2 個色號",
+      "3. 強調色：1 個色號",
+      "4. 中性色：包含背景、卡片、邊框、主要文字與次要文字",
+      "5. 狀態色：成功、警告、錯誤",
+      "",
+      "請使用 HEX 色號，說明每個顏色適合套用在哪些元件，並確認文字與背景具有足夠的可讀性。最後整理成方便我直接建立 Figma Color Styles 的表格。"
+    )
+  },
+  {
+    title: "文字規劃",
+    subtitle: "建立 UI 文字系統時，規劃清楚、一致且能直接建立 Text Styles 的文字層級。",
+    text: P(
+      "我正在設計（輸入你的產品名稱、類型），主要使用者是（輸入你的目標使用者），希望呈現（輸入希望帶給使用者的感受，可以用形容詞）的感覺。",
+      "",
+      "請幫我規劃一套適合此產品的 UI 文字層級，包含：",
+      "1. 大標題",
+      "2. 次標題",
+      "3. 卡片標題",
+      "4. 內文",
+      "5. 按鈕文字",
+      "6. 表單標籤",
+      "7. 輔助資訊",
+      "",
+      "請為每個層級提供：",
+      "1. Figma Text Style 名稱",
+      "2. 字號",
+      "3. 字重",
+      "4. 行高",
+      "5. 適用情境",
+      "6. 一句實際文字範例",
+      "",
+      "Output Format",
+      "請控制在 6-8 個文字樣式，避免建立過多相近的字級。層級之間要能明顯區分，同類資訊則保持一致。",
+      "",
+      "如果沒有指定字型，請推薦一款支援繁體中文、適合此風格且可免費使用的字型。最後整理成方便直接建立 Figma Text Styles 的表格。"
+    )
+  },
+  {
+    title: "產品介面分析",
+    subtitle: "檢視單一頁面時，找出值得觀察的設計方式與目前存在的問題。",
+    text: P(
+      "請分析我提供的介面畫面，從以下面向找出值得觀察的設計方式，以及目前可能存在的問題：",
+      "",
+      "1. 資訊層級：第一眼會看到什麼？重點是否清楚？",
+      "2. 排版與間距：對齊、留白、間距和區塊關係是否一致？",
+      "3. 色彩與對比：顏色是否有明確用途？文字和背景是否容易閱讀？",
+      "4. 字體層級：標題、內文與輔助資訊是否容易區分？",
+      "5. 元件一致性：按鈕、卡片、輸入框等設計是否統一？",
+      "6. 操作體驗：使用者是否知道下一步要做什麼？有沒有容易困惑的地方？",
+      "",
+      "請先說明這個畫面做得好的地方，再指出具體問題與原因，並提供可以直接執行的修改建議。請根據畫面中實際可見的內容分析，不要自行猜測看不到的功能。",
+      "",
+      "最後依照問題影響程度，分成「優先修改」、「建議改善」與「細節優化」，使用表格整理。"
+    )
+  }
+];
+
+const STAGE_05 = [
+  {
+    title: "檢查問題現況是否客觀",
+    subtitle: "檢視「問題現況」是否以事實為基礎，避免混入主觀判斷或預設解法。",
+    text: P(
+      "<任務說明>",
+      "以下是我撰寫的「問題現況」段落，請你幫我檢查是否符合設計儀表板的要求。",
+      "</任務說明>",
+      "",
+      "<檢查標準>",
+      "1.「我觀察到的」這一段是否根據事實、行為、經驗，不是加入主觀判斷或寫成解法？",
+      "2.「目前的解決方式」這一段是否有具體描述人們目前是怎麼處理這個問題？是否真實發生過，而不是寫成理想或建議？",
+      "</檢查標準>",
+      "",
+      "<作答要求>",
+      "請依照以上標準進行分析，並完成以下任務：",
+      "- 檢查是否寫進了解法傾向？",
+      "- 標出哪裡不夠客觀？",
+      "</作答要求>",
+      "",
+      "<問題現況段落>",
+      "我觀察到的：",
+      "[請貼上內容]",
+      "",
+      "目前的解決方式：",
+      "[請貼上內容]",
+      "</問題現況段落>"
+    )
+  },
+  {
+    title: "建立多元使用者同理心地圖",
+    subtitle: "根據問題背景描繪不同使用者，從言語、行為、感受與困難理解他們的處境。",
+    text: P(
+      "<任務說明>",
+      "我即將進入使用者想像階段，請你根據以下我提供的問題背景，並且查找資訊，產出 3～5 組同理心地圖（Empathy Map）。",
+      "</任務說明>",
+      "",
+      "<產出格式>",
+      "1. 使用者角色簡述（年齡、身分、生活狀態）",
+      "2. 四個象限：",
+      "   - 他會「說」什麼？（語言、抱怨、描述）",
+      "   - 他會「做」什麼？（行為、選擇、習慣）",
+      "   - 他會「想、感覺到」什麼？（內心想法、動機、情緒）",
+      "   - 他會「遇到的具體問題」？",
+      "</產出格式>",
+      "",
+      "<問題背景資訊>",
+      "[設計挑戰]",
+      "[我觀察到的]",
+      "[目前的解決方式]",
+      "</問題背景資訊>"
+    )
+  },
+  {
+    title: "找出問題造成的實際影響",
+    subtitle: "從時間、金錢、行為與心理層面，釐清現況對使用者造成的具體影響與可能根源。",
+    text: P(
+      "<任務說明>",
+      "我想請你幫我根據以下資訊，推論出「現況對使用者造成了什麼影響」。請不要只寫情緒反應（例如「覺得麻煩」、「很不方便」），而是幫我整理出更具體的影響面向，例如：",
+      "- 對生活造成什麼成本或困擾？",
+      "- 對行為產生什麼變化？（是否選擇放棄、逃避、錯過什麼）",
+      "- 是否產生額外的時間、金錢、心理負擔？",
+      "- 是否影響使用者對某件事的期待、信任、意願？",
+      "</任務說明>",
+      "",
+      "<作答要求>",
+      "請幫我描述這個現況對使用者產生了哪些實際影響（盡可能具體），也可以幫我歸納出 1～2 種潛在的問題根源。請以以下格式回答：",
+      "1. 使用者實際受到的影響（列舉 2～3 點，請具體描述，不要抽象）",
+      "2. 潛在問題根源（列出 1～2 點，說明為何這個狀況會產生）",
+      "</作答要求>",
+      "",
+      "<輸入內容>",
+      "我觀察到的：",
+      "[請貼上內容]",
+      "",
+      "目前的解決方式：",
+      "[請貼上內容]",
+      "",
+      "目前的方式的好處：",
+      "[請貼上內容]",
+      "",
+      "目前的方式有待改進之處：",
+      "[請貼上內容]",
+      "</輸入內容>"
+    )
+  },
+  {
+    title: "從四個方向發想 HMW 問題",
+    subtitle: "透過放大優點、減少痛點、跨域比喻與反向思考，將設計挑戰轉化成可探索的問題。",
+    text: P(
+      "<任務說明>",
+      "我將提供一個設計挑戰，請你依據四種不同的發想方向，幫我生成多個「How Might We（HMW）」問題句。",
+      "每個方向請各產出 1～2 組具有深度、有想像空間的 HMW 問題，並簡要說明你是從哪個角度切入這個挑戰。",
+      "</任務說明>",
+      "",
+      "<發想方向>",
+      "1. 增加好的部分：放大使用者已經在做的正向行為",
+      "2. 減少不好的部分：減少痛點、阻礙或困擾",
+      "3. 比喻與聯想：用其他領域的思維轉譯這個情境",
+      "4. 探索對立、對抗既定事實：反過來問，有沒有其他的替代方式",
+      "</發想方向>",
+      "",
+      "<產出格式>",
+      "請針對以上四種方向，分別產出 2～4 組 How Might We 問題句。",
+      "每個問題下方請簡要說明你是從哪個觀點切入的。",
+      "請不要重複使用相同語意的問法，問題內容要有延伸性與發展潛力。",
+      "</產出格式>",
+      "",
+      "<設計挑戰>",
+      "[請貼上你的設計挑戰內容]",
+      "</設計挑戰>"
+    )
+  },
+  {
+    title: "用光譜找出多元受訪者",
+    subtitle: "從不同的行為與動機軸線切分潛在受眾，協助招募更具代表性的訪談對象。",
+    text: P(
+      "<任務說明>",
+      "我將提供一個想解決的痛點。",
+      "1. 先找出最能影響此痛點的多條光譜軸（例如：自學意願：完全想自學 ←→ 完全不想自學）。",
+      "2. 再沿著這條光譜，挑選不同位置的潛在受眾角色。",
+      "</任務說明>",
+      "",
+      "<產出要求>",
+      "- 先用一句話寫出光譜軸（格式：{光譜名稱}：極端 A ←→ 極端 B）。",
+      "- 接著各個光譜列出 7～10 種潛在受眾角色，並標註他們位於光譜的哪一段（極端 A／中間／極端 B 之類）。",
+      "- 每一種角色請用簡短的一句話描述（例如：「習慣團體學習的學習者」）。",
+      "- 角色描述以「行為／動機」為主，避免過度具體的職業或年齡、避免誇張標籤。",
+      "- 角色之間盡量呈現多樣性。",
+      "</產出要求>",
+      "",
+      "<我提供的痛點>",
+      "[貼上痛點描述]",
+      "</我提供的痛點>"
+    )
+  },
+  {
+    title: "用 AEIOU 架構發展訪綱",
+    subtitle: "從活動、環境、互動、物件與使用者五個面向，發想能深入經驗與動機的訪談問題。",
+    text: P(
+      "<任務說明>",
+      "我將提供一個研究主題或情境，請你運用 AEIOU 方法（Activities、Environments、Interactions、Objects、Users）發散訪綱問題。",
+      "</任務說明>",
+      "",
+      "<產出要求>",
+      "- 依序列出 A／E／I／O／U 五大分類，每類提出 3～5 個訪綱問題。",
+      "- 問題須開放式，避免誘導或是是非題。",
+      "- 每題前加「-」並標示分類縮寫（例如：「A｜使用者在開始 XXX 活動前通常會……？」）。",
+      "- 確保問題能挖掘動機、情境與痛點，而不只停留在是／否。",
+      "- 建議多問「為什麼」、「可以敘述你之前做 xyz 的情況嗎？」",
+      "</產出要求>",
+      "",
+      "<我提供的設計挑戰>",
+      "[貼上設計挑戰描述]",
+      "</我提供的設計挑戰>"
+    )
+  },
+  {
+    title: "檢查單題訪綱品質",
+    subtitle: "判斷訪談問題是否過度封閉、模糊、誘導或一次詢問太多事情，並取得具體改寫建議。",
+    text: P(
+      "<任務說明>",
+      "以下是我寫的一題訪綱問題，請你根據標準檢查這題是否適合用在使用者訪談中。",
+      "</任務說明>",
+      "",
+      "<希望避免的問題>",
+      "1. 是非題｜問題太封閉，只能回答「是／不是」、「會／不會」",
+      "2. 習慣題｜使用「平常、通常、經常」等模糊時間，讓受訪者不易具體回想",
+      "3. 預設立場／個人假設｜問題中帶有主觀立場、建議導向、價值判斷（例如：你是不是覺得這樣比較好？）",
+      "4. 評論型問題｜要求受訪者直接給出評價，而不是描述經驗（例如：你覺得這功能好用嗎？）",
+      "5. 多重問題｜一題問兩件事，讓受訪者不知道該回答哪一個",
+      "</希望避免的問題>",
+      "",
+      "<輸入問題>",
+      "[請把你要檢查的訪綱問題填在這裡]",
+      "</輸入問題>",
+      "",
+      "<回答指引>",
+      "✅ 如果這題是好問題，請說明為什麼它合適。",
+      "❌ 如果這題不夠好，請指出違反哪一項標準，並修改成更合適的版本。",
+      "請以「✅ 好問題」或「❌ 需要修改」開頭作答。",
+      "</回答指引>"
+    )
+  },
+  {
+    title: "優化整份訪談大綱",
+    subtitle: "全面檢查訪綱的流程、重複題目與問題品質，並重新整理成更順暢的訪談順序。",
+    text: P(
+      "<任務說明>",
+      "以下是我寫的一整份訪綱，請你幫我檢查整體的邏輯、分類順序與問題設計品質。",
+      "</任務說明>",
+      "",
+      "<檢查標準>",
+      "1. 整體訪綱是否有清楚的邏輯順序？（例如：從背景 → 行為 → 痛點 → 期待）",
+      "2. 題目之間有沒有重複？或許是可以合併的部分。",
+      "3. 最後檢查哪些問題可以刪掉，或是需要調整？",
+      "</檢查標準>",
+      "",
+      "<作答要求>",
+      "請依照以上標準進行分析，並完成以下任務：",
+      "- 檢查整體結構是否清楚、順暢。",
+      "- 標出需要優化的問題（指出為什麼不佳）。",
+      "- 幫我改寫或重排成更合適的版本。",
+      "</作答要求>",
+      "",
+      "<訪綱內容>",
+      "[請在這裡貼上你的訪綱問題列表]",
+      "</訪綱內容>"
+    )
+  },
+  {
+    title: "用 JTBD 四象限整理訪談資訊",
+    subtitle: "將零散訪談內容分類為任務、痛點、收穫與限制，快速找出跨受訪者的共同線索。",
+    text: P(
+      "<任務說明>",
+      "以下是來自不同受訪者的訪談資訊，每一段開頭會標示是哪一位受訪者（例如：P01、P02……），每段底下列出的是這位受訪者相關的一條條資訊。這些資訊已經是初步拆解過的，接下來請協助我們進行進一步的整理分類。",
+      "</任務說明>",
+      "",
+      "<作答要求>",
+      "1. 根據內容意義，將這些資訊依照框架「JTBD 四象限」重新分組，每個組別下方列出屬於那個主題的資訊。",
+      "2. JTBD 四象限：",
+      "   - Job：受訪者想完成的目標或任務",
+      "   - Pain：在過程中遇到的困難、不便、卡關",
+      "   - Gain：希望獲得的好處、提升或滿足感",
+      "   - Constraint：時間、資源、能力等限制條件",
+      "3. 每條資訊請保留原本的受訪者編號，幫助我知道這些經驗來自誰（例如：P01）。",
+      "4. 若資訊中明顯出現時間節點（如事情發生在行動之前、進行當中或結束之後），請在資訊後面加上小括號標註：「(Before)」「(During)」「(After)」，僅做為輔助理解，無需進一步分群。",
+      "</作答要求>",
+      "",
+      "<訪談資料>",
+      "P01 的資訊：",
+      "P02 的資訊：",
+      "</訪談資料>"
+    )
+  },
+  {
+    title: "從訪談資料提煉深層需求",
+    subtitle: "分析使用者的行為、情緒與矛盾，將表面觀察轉化為可用於設計的需求洞察。",
+    text: P(
+      "<任務說明>",
+      "你是一位擅長從使用者訪談資料中提煉深層洞察的 UX 設計師。",
+      "以下是分類後的使用者資訊，請你協助進行深入分析，並產出多組具脈絡的觀察。",
+      "</任務說明>",
+      "",
+      "<分析指引>",
+      "請針對每一組資訊，從以下角度進行閱讀與分析：",
+      "1. 使用者在這類情境下，具體做了什麼？表現出什麼樣的語氣或情緒反應？",
+      "2. 有沒有語言上的矛盾、猶豫，或是值得注意的小行為、小習慣？",
+      "3. 他們在這些行為或反應背後，可能真正在意的是什麼？",
+      "4. 能不能從這些描述中，推論出他們沒有直接說出口的需求或期待？（以動詞形式表達）",
+      "",
+      "請根據這些角度，整理出多組有脈絡的使用者觀察，每一組觀察請具體描述你推論出的洞察，不需要單純重述原始資訊。",
+      "</分析指引>",
+      "",
+      "<產出格式>",
+      "請用以下格式撰寫每一組觀察：",
+      "觀察描述（客觀事實）",
+      "推論洞察（以設計思考中的 need statement 呈現：請特別注意要用動詞呈現使用者的需求，用自然語氣描述，避免太學術，可以有多組洞察）",
+      "</產出格式>",
+      "",
+      "<分類後的資訊>",
+      "[請在這裡貼上分類好的資訊]",
+      "</分類後的資訊>"
+    )
+  },
+  {
+    title: "檢查設計觀點是否具洞察力",
+    subtitle: "評估設計觀點是否超越表面事實、清楚呈現需求，並保留可以繼續設計與探索的空間。",
+    text: P(
+      "<任務說明>",
+      "請你幫我檢查以下這段設計觀點句，看看是否合理、具洞察力，並給出具體回饋。",
+      "</任務說明>",
+      "",
+      "<評估標準>",
+      "請針對以下三點給出逐項評論，必要時請示範修改更好的版本：",
+      "1. 洞察是否夠深：",
+      "   - 是否只是重述表面事實，還是有找到背後的動機、情緒或矛盾？",
+      "   - 好的洞察應該是「出乎意料但合乎常理」，符合生活經驗，又具新鮮角度。",
+      "2. 需求是否清楚且可設計：",
+      "   -「我認為他們需要……」這句話是否是以動詞表達？",
+      "   - 避免只寫名詞（如「便利性」），或直接寫解法（如「需要一個 App」）。",
+      "3. 是否遺漏了其他可能角度：",
+      "   - 有沒有忽略其他觀察視角（如情緒、環境、限制等）？",
+      "   - 是否能從不同使用者類型、行為時機再延伸看看？",
+      "</評估標準>",
+      "",
+      "<觀點句型>",
+      "我遇到的是：",
+      "[請貼上你的內容]",
+      "",
+      "我發現：",
+      "[請貼上你的內容]",
+      "",
+      "我認為，他們需要：",
+      "[請貼上你的內容]",
+      "",
+      "這樣一來，就可以：",
+      "[請貼上你的內容]",
+      "</觀點句型>"
+    )
+  },
+  {
+    title: "從設計觀點延伸 HMW 問題",
+    subtitle: "將設計觀點轉化為多方向的 HMW 問題，擴大後續概念發想的可能性。",
+    text: P(
+      "<任務說明>",
+      "我將提供一個設計觀點，請你依據四種不同的發想方向，幫我生成多個「How Might We（HMW）」問題句。",
+      "每個方向請各產出 5～8 組具有深度、有想像空間的 HMW 問題，並簡要說明你是從哪個角度切入這個觀點。",
+      "</任務說明>",
+      "",
+      "<發想方向>",
+      "1. 增加好的部分：放大使用者已經在做的正向行為",
+      "2. 減少不好的部分：減少痛點、阻礙或困擾",
+      "3. 比喻與聯想：用其他領域的思維轉譯這個情境",
+      "4. 探索對立、對抗既定事實：反過來問，有沒有其他的替代方式",
+      "</發想方向>",
+      "",
+      "<產出格式>",
+      "請針對以上四種方向，分別產出 5～8 組 How Might We 問題句。",
+      "每個問題下方請簡要說明你是從哪個觀點切入的。",
+      "請不要重複使用相同語意的問法，問題內容要有延伸性與發展潛力。",
+      "</產出格式>",
+      "",
+      "<設計觀點>",
+      "[請貼上你的設計觀點內容]",
+      "</設計觀點>"
+    )
+  },
+  {
+    title: "從 HMW 發想並評估解方",
+    subtitle: "從流程、功能、視覺與行為等切角提出解方，並比較各構想的可行性與新鮮感。",
+    text: P(
+      "<任務說明>",
+      "我將提供一個 How Might We（HMW）問題句，請你幫我從不同角度發想多個可能的解方構想。每個構想請用簡潔明確的語言描述，並說明它對應的使用者困難。構想可以從以下角度切入：互動流程、功能設計、視覺引導、心理引導、行為引導等。另外，想請你簡單評估一下每個解方的「可行性」和「有趣度」，幫助挑選更值得延伸的方向。",
+      "</任務說明>",
+      "",
+      "<產出要求>",
+      "請針對以下 HMW，產出至少 3 組不同切角的構想。",
+      "每組構想請使用以下格式呈現：",
+      "---",
+      "1. 解方構想名稱：一句話說明",
+      "2. 設計概念：這個構想是什麼？它會怎麼運作？",
+      "3. 對應的痛點：這個設計想處理什麼使用者困難？",
+      "4. 可行性評估：初步看來這個構想是否容易實作？是否技術可行？",
+      "5. 有趣度評估：這個構想是否有新鮮感？或能帶來特別的使用者體驗？",
+      "---",
+      "</產出要求>",
+      "",
+      "<HMW 問題句>",
+      "[請貼上你的 HMW 問題句]",
+      "</HMW 問題句>"
+    )
+  },
+  {
+    title: "規劃原型測試場景與訪綱",
+    subtitle: "根據產品假設與驗證目的，設計能直接檢驗核心概念的易用性測試和訪談問題。",
+    text: P(
+      "<任務說明>",
+      "你是一位原型測試教練。根據我提供的假設和目的句子，來設計驗證假設，還有做產品易用性的測試並且產出對應的訪綱。",
+      "",
+      "撰寫原則：",
+      "1. 問題要能直接檢驗假設重點，而非討論其他面向。",
+      "2. 不必加入時間、步數或量化指標；可用開放式提問。",
+      "</任務說明>",
+      "",
+      "<產出格式>",
+      "# 驗證場景",
+      "## Usability Test",
+      "## 訪談問題",
+      "</產出格式>",
+      "",
+      "<我給的資訊>",
+      "1. 我認為／假設，透過這個解決方案使用者可以……",
+      "2. 這樣一來使用者就……（目的）",
+      "</我給的資訊>"
+    )
+  },
+  {
+    title: "分類與拆解原型測試回饋",
+    subtitle: "將使用者回應整理進回饋捕捉表格，辨識優點、問題、困惑與值得延伸的新發現。",
+    text: P(
+      "<任務說明>",
+      "你是一位擅長協助使用者整理設計測試回饋的訪談分析教練。以下是我在原型測試訪談中記錄的所有使用者回應。",
+      "請你幫我判斷這些內容，分別適合放入「回饋捕捉表格」中的哪一個分類象限，或是否可以拆成兩個以上的觀察點，分別對應到不同象限。",
+      "",
+      "分類象限如下：",
+      "1. 使用者覺得好的",
+      "2. 使用者覺得需要改進的",
+      "3. 使用者有困惑的地方",
+      "4. 新想法、新發現、新點子",
+      "</任務說明>",
+      "",
+      "<產出格式>",
+      "請說明各個回饋適合放入哪一個分類並說明原因。",
+      "",
+      "範例格式：",
+      "1. [我給的資訊] → 分類：[分類象限名稱]，原因：XXXX",
+      "2. [我給的資訊] → 分類：[分類象限名稱]，原因：XXXX",
+      "3. ……",
+      "</產出格式>",
+      "",
+      "<我給的資訊>",
+      "使用者回應記錄：",
+      "[請把訪談中記下的使用者回饋貼在這裡]",
+      "</我給的資訊>"
+    )
+  }
+];
+
+const STAGE_06 = [
+  {
+    title: "User Story 需求發想",
+    subtitle: "從產品目標與使用者情境出發，產出可用於功能規劃的 User Story。",
+    text: P(
+      "你是一位資深 UX Designer，擅長需求探索與 User Story 撰寫。請根據我提供的產品資訊，從不同使用者、情境與需求出發，產出多組 User Story，作為後續功能規劃與產品設計的基礎。",
+      "",
+      "我會提供：",
+      "- 產品的核心目標：（輸入產品想解決的問題或創造的價值）",
+      "- 產品要服務的對象：（輸入主要使用者）",
+      "- 產品的核心亮點：（輸入產品與其他方案不同的地方）",
+      "- 產品的重點功能：（輸入預計提供的主要功能）",
+      "",
+      "請依照以下原則發想：",
+      "1. 使用者導向：描述使用者想完成的事情，不要只改寫產品功能。",
+      "2. 情境具體：清楚說明使用者是誰、遇到什麼情境，以及想解決什麼問題。",
+      "3. 價值清楚：「這樣一來」需說明使用者獲得的實際幫助，避免只寫「更方便」或「提升體驗」。",
+      "4. 多元發散：從不同使用者類型、使用時機、任務與痛點發想，避免只是替換相似的用詞。",
+      "5. 不過度假設：以我提供的產品資訊為基礎，不要自行加入未提及的功能。",
+      "",
+      "Output Format",
+      "請產出 8～12 組 User Story，每組使用以下格式：",
+      "身為一個［使用者角色］，",
+      "我需要［想完成的事情或需求］，",
+      "這樣一來我就能［獲得的價值或改善］。",
+      "",
+      "最後挑出 5 組最值得深入設計的核心 User Story，優先選擇發生頻率高、對使用者重要，或最容易產生痛點的需求，並簡單說明原因。"
+    )
+  },
+  {
+    title: "Flow Chart 流程邏輯檢查",
+    subtitle: "透過流程圖截圖檢查操作邏輯、異常路徑與可簡化的步驟。",
+    text: P(
+      "你是一位資深 UX Designer，擅長使用者流程與資訊架構。請閱讀我上傳的 Flow Chart 截圖，協助我檢查流程邏輯，並提供具體的修改建議。",
+      "",
+      "請依照以下方向檢查：",
+      "1. 流程起點與終點是否清楚。",
+      "2. 每個步驟的前後關係是否合理。",
+      "3. 判斷節點是否包含不同結果與對應路徑。",
+      "4. 是否存在中斷、死路、重複或無法返回的流程。",
+      "5. 節點名稱是否清楚描述使用者行為或系統回應。",
+      "6. 整體流程是否符合使用者實際操作習慣。",
+      "7. 是否有可以合併、刪除或簡化的步驟。",
+      "",
+      "如果截圖中有無法辨識的文字或連線，請直接指出，不要自行猜測。",
+      "",
+      "Output Format",
+      "請依照以下格式回答：",
+      "1. 流程摘要：簡述你從圖中理解到的主要流程。",
+      "2. 邏輯合理的地方：指出設計正確且值得保留的部分。",
+      "3. 需要調整的地方：標出對應節點，說明問題及可能造成的影響。",
+      "4. 遺漏的情境：列出需要補充的流程或例外狀況。",
+      "5. 修改建議：按照影響程度排序，提供具體的調整方式。"
+    )
+  },
+  {
+    title: "元件庫命名建議",
+    subtitle: "根據元件外觀、用途與狀態，建立清楚且一致的元件庫命名方式。",
+    text: P(
+      "請閱讀我上傳的元件設計截圖，根據元件的外觀、用途與狀態，協助我建立清楚且一致的元件名稱。",
+      "",
+      "請依照以下原則命名：",
+      "1. 使用簡單、容易理解的英文。",
+      "2. 先分類元件類型，再描述樣式或用途，例如 Button/Primary。",
+      "3. 尺寸、狀態與樣式使用一致的命名方式。",
+      "4. 外觀相近的元件，建議使用 Variant 整理。",
+      "5. 若無法從畫面判斷元件用途或狀態，請直接指出，不要自行猜測。",
+      "",
+      "Output Format",
+      "1. 元件辨識：說明截圖中包含哪些元件。",
+      "2. 建議命名：列出「元件位置或外觀 → 建議名稱」。",
+      "3. Variant 建議：整理適合使用的屬性與選項，例如 Type、Size、State。",
+      "4. 命名規則：提供一套可套用到整份元件庫的命名格式與範例。"
+    )
+  }
+];
+
+const STAGES = [
+  { name: "專案發想", desc: "初步發想未來要製作的專案主題。", items: STAGE_01 },
+  { name: "產品概念探索", desc: "觀察現有產品並整理個人觀點，再透過產品之旅表格完成專案的初步規劃。", items: STAGE_02 },
+  { name: "Figma 基礎工具", desc: "了解 Figma 的使用方法。", items: STAGE_03 },
+  { name: "UI 基礎概念", desc: "了解 UI 基本設計概念，並實際進行臨摹與產品 Redesign。", items: STAGE_04 },
+  { name: "產品規劃入門與概念探索方法論", desc: "針對自己的專案主題做進一步的研究，並應用設計思考方法論進行使用者訪談與定義產品。", items: STAGE_05 },
+  { name: "產品規劃文件化", desc: "針對自己的專案主題做進一步的研究，並應用設計思考方法論進行使用者訪談與定義產品。", items: STAGE_06 }
+];
+
+class Component extends DCLogic {
+  state = { stage: 0, modal: null, copied: false };
+
+  componentDidMount() {
+    this._onKey = (e) => { if (e.key === "Escape") this.setState({ modal: null }); };
+    document.addEventListener("keydown", this._onKey);
+  }
+  componentWillUnmount() { document.removeEventListener("keydown", this._onKey); }
+
+  pad(n) { return String(n).padStart(2, "0"); }
+
+  flash(ok) {
+    this.setState({ copied: ok ? "ok" : "fail" });
+    clearTimeout(this._t);
+    this._t = setTimeout(() => this.setState({ copied: false }), 1800);
+  }
+
+  selectPromptText() {
+    const el = this._textEl;
+    if (!el) return false;
+    try {
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      return true;
+    } catch (e) { return false; }
+  }
+
+  legacyCopy(text) {
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.cssText = "position:fixed;top:0;left:0;opacity:0;pointer-events:none;";
+      document.body.appendChild(ta);
+      ta.select();
+      ta.setSelectionRange(0, text.length);
+      let ok = false;
+      try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+      document.body.removeChild(ta);
+      if (!ok) this.selectPromptText();
+      return ok;
+    } catch (e) { return false; }
+  }
+
+  copy(text) {
+    if (!text) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(
+        () => this.flash(true),
+        () => this.flash(this.legacyCopy(text))
+      );
+    } else {
+      this.flash(this.legacyCopy(text));
+    }
+  }
+
+  renderVals() {
+    const idx = Math.min(this.state.stage, STAGES.length - 1);
+    const stage = STAGES[idx];
+    const modal = this.state.modal;
+
+    const navItems = STAGES.map((s, i) => {
+      const on = i === idx;
+      return {
+        num: this.pad(i + 1),
+        name: s.name,
+        bg: on ? "var(--coral)" : "transparent",
+        fg: on ? "var(--white)" : "var(--navy)",
+        border: on ? "var(--coral)" : "var(--cream-200)",
+        shadow: on ? "var(--shadow-coral)" : "none",
+        onClick: () => this.setState({ stage: i })
+      };
+    });
+
+    const source = stage.items || Array.from({ length: stage.cards || 4 }, (_, i) => ({
+      title: "[提示詞標題 " + (i + 1) + "]",
+      subtitle: "[副標：一句話說明這道提示詞的用途]",
+      text: PLACEHOLDER
+    }));
+    const cards = source.map((item) => ({
+      ...item,
+      onClick: () => this.setState({ modal: item, copied: false })
+    }));
+
+    return {
+      navItems,
+      cards,
+      stageNum: this.pad(idx + 1),
+      stageName: stage.name,
+      stageDesc: stage.desc,
+      showBlobs: this.props.showBlobs ?? true,
+      gridMin: (this.props.density ?? "comfortable") === "compact" ? "220px" : "270px",
+      modalOpen: !!modal,
+      modalTitle: modal ? modal.title : "",
+      modalSubtitle: modal ? modal.subtitle : "",
+      modalText: modal ? modal.text : "",
+      textRef: (el) => { this._textEl = el; },
+      copyLabel: this.state.copied === "ok" ? "已複製 ✓"
+        : this.state.copied === "fail" ? "已選取，請按 ⌘C／Ctrl+C"
+        : "複製提示詞",
+      onCopy: () => this.copy(modal ? modal.text : ""),
+      onClose: () => this.setState({ modal: null }),
+      onOverlayClick: (e) => { if (e.target === e.currentTarget) this.setState({ modal: null }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

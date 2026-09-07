@@ -1,0 +1,6 @@
+/* Kanshoku webfonts — deploy build.
+   The bundled GenSenMaruGothicTW TTFs (13.5 MB each) are too large for GitHub,
+   so the deploy copy loads the same typeface (源泉圓體 TW) from emfont's CDN.
+   Local design work keeps using the TTFs in the project. */
+
+@import url("https://font.emtech.cc/css/GenSenRoundedTW");

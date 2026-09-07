@@ -1,0 +1,74 @@
+/* Kanshoku — Color tokens
+   Sourced from the brand's Figma "kanshoku" color styles:
+     #1D3975  navy   — primary / structural
+     #393939  ink    — body text
+     #EB806A  coral  — accent / appetite
+     #FAF1E3  cream  — page surface
+   The palette is warm and appetizing: a cream "tablecloth" base, a
+   trustworthy navy, and a coral that reads like a ripe ingredient. */
+
+:root {
+  /* ---- Brand core (raw) ---- */
+  --navy-900: #0f1f43;
+  --navy-700: #16294f;
+  --navy: #1d3975;          /* brand navy */
+  --navy-400: #4a5f93;
+  --navy-200: #aab4cf;
+
+  --coral-700: #c95b44;
+  --coral-600: #de6c52;
+  --coral: #eb806a;         /* brand coral */
+  --coral-300: #f4ad9d;
+  --coral-100: #fbe2da;
+
+  --ink: #393939;           /* brand charcoal */
+  --ink-600: #5c5957;
+  --ink-400: #8a8580;
+  --ink-200: #c4bcb1;
+
+  --cream: #faf1e3;         /* brand cream */
+  --cream-200: #f3e6d2;     /* deeper cream, hairlines on cream */
+  --cream-50: #fdf9f1;      /* lifted cream, card on cream */
+  --white: #ffffff;
+
+  /* honey / toast — supporting warm tone for highlights & "progress" */
+  --honey: #e8a838;
+  --honey-100: #f8eccf;
+
+  /* leaf — sparing "fresh / complete" success tone */
+  --leaf: #5b9e7a;
+  --leaf-100: #dcebe2;
+
+  /* ---- Semantic aliases ---- */
+  --surface-page: var(--cream);
+  --surface-card: var(--white);
+  --surface-card-warm: var(--cream-50);
+  --surface-inverse: var(--navy);
+  --surface-sunken: var(--cream-200);
+
+  --text-strong: var(--navy);
+  --text-body: var(--ink);
+  --text-muted: var(--ink-400);
+  --text-on-dark: var(--cream);
+  --text-on-coral: var(--white);
+
+  --border-soft: var(--cream-200);
+  --border-ink: var(--ink);
+  --border-strong: var(--navy);
+
+  --accent: var(--coral);
+  --accent-hover: var(--coral-600);
+  --accent-press: var(--coral-700);
+  --accent-soft: var(--coral-100);
+
+  --primary: var(--navy);
+  --primary-hover: var(--navy-700);
+  --primary-press: var(--navy-900);
+
+  --success: var(--leaf);
+  --success-soft: var(--leaf-100);
+  --progress: var(--honey);
+  --progress-soft: var(--honey-100);
+
+  --focus-ring: var(--coral);
+}

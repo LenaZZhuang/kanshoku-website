@@ -1,0 +1,43 @@
+/* Kanshoku — Spacing, radius, shadow, motion tokens
+   Soft, rounded, generous. Corners are pill-friendly (the brand reads as
+   plates, bowls, soft food shapes). Shadows are warm and low — like a dish
+   resting on a tablecloth, never harsh. */
+
+:root {
+  /* ---- Spacing scale (4px base) ---- */
+  --space-1: 0.25rem;   /* 4 */
+  --space-2: 0.5rem;    /* 8 */
+  --space-3: 0.75rem;   /* 12 */
+  --space-4: 1rem;      /* 16 */
+  --space-5: 1.5rem;    /* 24 */
+  --space-6: 2rem;      /* 32 */
+  --space-7: 3rem;      /* 48 */
+  --space-8: 4rem;      /* 64 */
+  --space-9: 6rem;      /* 96 */
+
+  /* ---- Radius — rounded & soft, the heart of the brand ---- */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 16px;    /* default card */
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-pill: 999px; /* buttons, tags, chips */
+
+  /* ---- Shadows — warm-tinted, soft, low ---- */
+  --shadow-xs: 0 1px 2px rgba(57, 57, 57, 0.06);
+  --shadow-sm: 0 2px 8px rgba(57, 57, 57, 0.07);
+  --shadow-md: 0 8px 24px rgba(29, 57, 117, 0.08);
+  --shadow-lg: 0 18px 48px rgba(29, 57, 117, 0.12);
+  --shadow-coral: 0 10px 24px rgba(235, 128, 106, 0.28);
+
+  /* ---- Motion — gentle, slightly bouncy ("bite") ---- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);      /* @kind other */
+  --ease-bite: cubic-bezier(0.34, 1.56, 0.64, 1);  /* @kind other */
+  --dur-fast: 120ms;  /* @kind other */
+  --dur-base: 200ms;  /* @kind other */
+  --dur-slow: 360ms;  /* @kind other */
+
+  /* ---- Layout ---- */
+  --container: 1200px;        /* @kind spacing */
+  --container-narrow: 760px;  /* @kind spacing */
+}
